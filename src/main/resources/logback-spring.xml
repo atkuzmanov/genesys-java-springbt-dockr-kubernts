@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RE: Logback + Logstash + Configuration
+- <http://logback.qos.ch/manual/introduction.html>
+- <https://github.com/mafr/structured-logging/blob/master/spring-boot/logback-spring.xml>
+- <https://github.com/mafr/structured-logging> -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property resource="application.properties"/>
+    <contextName>${spring.application.name}</contextName>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <contextName>
+                    <fieldName>app</fieldName>
+                </contextName>
+                <uuid>
+                    <fieldName>logMsgId</fieldName>
+                    <strategy>random</strategy>
+                </uuid>
+                <timestamp>
+                    <fieldName>@timestamp</fieldName>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <version>
+                    <fieldName>@version</fieldName>
+                </version>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+                <mdc/>
+                <arguments>
+                    <includeNonStructuredArguments>false</includeNonStructuredArguments>
+                </arguments>
+                <stackTrace>
+                    <fieldName>stackTrace</fieldName>
+                </stackTrace>
+                <message>
+                    <fieldName>message</fieldName>
+                </message>
+                <pattern>
+                    <pattern>
+                        {
+                        "method": "%method",
+                        "class": "%class"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+    <root level="${logging.level.customLogbackLevel}">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  genesysmysql:
+    container_name: genesysmysql
+    image: "mysql:8.0.21"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_example
+      - MYSQL_USER=springuser
+      - MYSQL_PASSWORD=ThePassword
+    ports:
+      - 3306:3306
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 20
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+  genesys:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      genesysmysql:
+        condition: service_healthy
+    environment:
+      - spring.datasource.url=jdbc:mysql://genesysmysql:3306/db_example?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true&serverTimezone=UTC
+      - spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.zipkin.base-url=http://zipkin:9411/
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - 9411:9411
