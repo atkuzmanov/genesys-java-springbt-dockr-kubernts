@@ -69,6 +69,8 @@ The project comes incorporating or pre-configured to be compatible with the foll
 - [Apache Tomcat](http://tomcat.apache.org/)
 - [Design Patterns](https://www.oodesign.com/)
     - [Builder Design Pattern](https://www.oodesign.com/builder-pattern.html)
+- [Lombok](https://www.projectlombok.org/)
+- [Google Guava](https://github.com/google/guava)
 - [Docker](https://www.docker.com/)
     - [Docker-compose](https://docs.docker.com/compose/)
 - [Kubernetes](https://kubernetes.io/)
