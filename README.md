@@ -71,6 +71,7 @@ The project comes incorporating or pre-configured to be compatible with the foll
     - [Builder Design Pattern](https://www.oodesign.com/builder-pattern.html)
 - [Docker](https://www.docker.com/)
     - [Docker-compose](https://docs.docker.com/compose/)
+- [Kubernetes](https://kubernetes.io/)
 
 **Note:** For the relevant versions, please see the [POM file](pom.xml).
 
