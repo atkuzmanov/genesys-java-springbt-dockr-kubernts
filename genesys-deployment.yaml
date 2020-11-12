@@ -34,6 +34,7 @@ spec:
             - name: spring.zipkin.base-url
               value: http://zipkin:9411/
           image: genesys
+          imagePullPolicy: Never
           name: genesys
           ports:
             - containerPort: 8080
