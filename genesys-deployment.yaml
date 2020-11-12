@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /Users/alkuzmanov/go/bin/kompose convert
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: genesys
+  name: genesys
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: genesys
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /Users/alkuzmanov/go/bin/kompose convert
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: genesys
+    spec:
+      containers:
+        - env:
+            - name: spring.datasource.driver-class-name
+              value: com.mysql.cj.jdbc.Driver
+            - name: spring.datasource.url
+              value: jdbc:mysql://genesysmysql:3306/db_example?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true&serverTimezone=UTC
+            - name: spring.jpa.properties.hibernate.dialect
+              value: org.hibernate.dialect.MySQL5Dialect
+            - name: spring.zipkin.base-url
+              value: http://zipkin:9411/
+          image: genesys
+          name: genesys
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
